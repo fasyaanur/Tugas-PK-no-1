@@ -1,0 +1,162 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Student {
+    private int id;
+    private String name;
+    private String major;
+    private int semester;
+    private int year;
+    private String gender;
+
+    public Student(int id, String name, String major, int semester, int year, String gender) {
+        this.id = id;
+        this.name = name;
+        this.major = major;
+        this.semester = semester;
+        this.year = year;
+        this.gender = gender;
+    }
+
+    // Getter methods for the attributes (ID, Name, Major, Semester, Year, Gender)
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public int getSemester() {
+        return semester;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+}
+
+public class StudentManagementSystem {
+    private static ArrayList<Student> students = new ArrayList<>();
+    private static int nextId = 1;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Student Management System");
+            System.out.println("1. Input new student data");
+            System.out.println("2. Update student data");
+            System.out.println("3. See all student data");
+            System.out.println("4. See specific student data by ID");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    inputStudentData(scanner);
+                    break;
+                case 2:
+                    updateStudentData(scanner);
+                    break;
+                case 3:
+                    seeAllStudentData();
+                    break;
+                case 4:
+                    seeStudentDataByID(scanner);
+                    break;
+                case 5:
+                    System.out.println("Exiting the program.");
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+
+    private static void inputStudentData(Scanner scanner) {
+        System.out.print("Enter student name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter student major: ");
+        String major = scanner.nextLine();
+        System.out.print("Enter student semester: ");
+        int semester = scanner.nextInt();
+        System.out.print("Enter student year: ");
+        int year = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+        System.out.print("Enter student gender: ");
+        String gender = scanner.nextLine();
+
+        Student student = new Student(nextId++, name, major, semester, year, gender);
+        students.add(student);
+
+        System.out.println("Student added successfully with ID: " + (nextId - 1));
+    }
+
+    private static void updateStudentData(Scanner scanner) {
+        System.out.print("Enter student ID to update: ");
+        int idToUpdate = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        for (Student student : students) {
+            if (student.getId() == idToUpdate) {
+                System.out.print("Enter new student name: ");
+                String newName = scanner.nextLine();
+                System.out.print("Enter new student major: ");
+                String newMajor = scanner.nextLine();
+                System.out.print("Enter new student semester: ");
+                int newSemester = scanner.nextInt();
+                System.out.print("Enter new student year: ");
+                int newYear = scanner.nextInt();
+                scanner.nextLine(); // Consume newline
+                System.out.print("Enter new student gender: ");
+                String newGender = scanner.nextLine();
+
+                // Update student data
+                student = new Student(idToUpdate, newName, newMajor, newSemester, newYear, newGender);
+                System.out.println("Student data updated successfully.");
+                return;
+            }
+        }
+
+        System.out.println("Student with ID " + idToUpdate + " not found.");
+    }
+
+    private static void seeAllStudentData() {
+        System.out.println("All student data:");
+        for (Student student : students) {
+            System.out.println("ID: " + student.getId() + ", Name: " + student.getName() +
+                    ", Major: " + student.getMajor() + ", Semester: " + student.getSemester() +
+                    ", Year: " + student.getYear() + ", Gender: " + student.getGender());
+        }
+    }
+
+    private static void seeStudentDataByID(Scanner scanner) {
+        System.out.print("Enter student ID to view: ");
+        int idToView = scanner.nextInt();
+
+        for (Student student : students) {
+            if (student.getId() == idToView) {
+                System.out.println("Student data for ID " + idToView + ":");
+                System.out.println("ID: " + student.getId() + ", Name: " + student.getName() +
+                        ", Major: " + student.getMajor() + ", Semester: " + student.getSemester() +
+                        ", Year: " + student.getYear() + ", Gender: " + student.getGender());
+                return;
+            }
+        }
+
+        System.out.println("Student with ID " + idToView + " not found.");
+    }
+}
